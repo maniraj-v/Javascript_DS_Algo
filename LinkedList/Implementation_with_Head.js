@@ -55,11 +55,11 @@ class Node {
         for (let i = 0; i < index - 1; i++) {
           currentNode = currentNode.next;
         }
-        const node = new Node(val);
-        const temp = currentNode.next;
-        currentNode.next = node;
-        node.next = temp;
-        this.size++;
+        const insertNode = new Node(val);
+        const nodesAfterInsertIndex = currentNode.next
+        insertNode.next = nodesAfterInsertIndex
+        currentNode.next = insertNode
+        this.size++
       }
     }
     // Remove node at index, if found return value, else null
@@ -80,45 +80,21 @@ class Node {
       this.size--;
       return removedNode.val;
     }
-  
-    // Remove node based on value, if found return index, else -1
-    removeValue(val) {
-      if (this.isEmpty()) return -1;
-      if (this.head.val === val) {
-        this.head = this.head.next;
-        this.size--;
-        return 0;
-      }
-      let i = 1;
-      let currentNode = this.head;
-      while (currentNode.next && currentNode.next.val !== val) {
-        currentNode = currentNode.next;
-        i++;
-      }
-      if (currentNode.next) {
-        currentNode.next = currentNode.next.next;
-        this.size--;
-        return i;
-      }
-      return -1;
-    }
-  
+    
     // Search node, if found return index, else -1
     search(val) {
       if (this.isEmpty()) return -1;
-      if (this.head.val === val) {
-        return 0;
+      let currentNode = this.head
+      let counter = 0, resultIndex = -1
+      while(currentNode){
+          if(currentNode.val === val){
+            resultIndex = counter
+            break
+          }
+          currentNode = currentNode.next
+          counter++
       }
-      let i = 1;
-      let currentNode = this.head;
-      while (currentNode.next && currentNode.next.val !== val) {
-        currentNode = currentNode.next;
-        i++;
-      }
-      if (currentNode.next) {
-        return i;
-      }
-      return -1;
+      return resultIndex
     }
   
     print() {
@@ -151,7 +127,6 @@ class Node {
   list.insert(2, 5.5);
   console.log("removed val", list.remove(3));
   list.append(7);
-  console.log("removed index", list.removeValue(7));
   console.log("search", list.search(5));
   list.print();
   console.log(list);
