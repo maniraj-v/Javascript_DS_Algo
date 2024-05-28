@@ -46,6 +46,10 @@ class LinkedList {
     const removedNodeVal = this.head.val;
     this.head = this.head.next;
     this.size--;
+    // tail is impacted when if last node is removed
+    if(this.size === 0){
+      this.tail = null
+    }
     return removedNodeVal;
   }
 
