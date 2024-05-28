@@ -1,3 +1,17 @@
+/**
+    Linked List Tail Pointer Implementation
+
+    Stack [LIFO]
+
+    push -- prepend O(1)
+    pop -- removeFromFront O(1)
+
+    Queue [FIFO]
+
+    push -- append O(1)
+    pop -- removeFromFront O(1)
+**/
+
 // Node class
 class Node {
   constructor(val) {
