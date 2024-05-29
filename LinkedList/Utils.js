@@ -46,3 +46,28 @@ function alternateMerge(node1, node2){
         node1 = node1.next.next
     }
 }
+
+// Remove Nth node from end of the list
+// Input: head = [1,2,3,4,5], n = 2
+// Output: [1,2,3,5]
+function removeNthFromEnd(head, n) {
+    let fast = head
+    let slow = head
+    // Fast forward until n places
+    while(n>0){
+        fast = fast.next
+        n--
+    }
+    // If fast is null, remove node is first position
+    if(fast === null){
+        return head.next
+    }
+    // Loop until fast node reaches null, then slow will be (n-1) from last
+    while(fast && fast.next){
+        fast = fast.next
+        slow = slow.next
+    }
+    // removing nth from last
+    slow.next = slow.next.next
+    return head
+}
