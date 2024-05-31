@@ -1,3 +1,4 @@
+//--------------------------------------------------------------------------------------------------------
 // Reorder the list
 // Input: head = [1,2,3,4,5]
 // Output: [1,5,2,4,3]
@@ -46,7 +47,9 @@ function alternateMerge(node1, node2){
         node1 = node1.next.next
     }
 }
+//--------------------------------------------------------------------------------------------------------------
 
+//--------------------------------------------------------------------------------------------------------------
 // Remove Nth node from end of the list
 // Input: head = [1,2,3,4,5], n = 2
 // Output: [1,2,3,5]
@@ -71,7 +74,9 @@ function removeNthFromEnd(head, n) {
     slow.next = slow.next.next
     return head
 }
+//--------------------------------------------------------------------------------------------------------------
 
+//--------------------------------------------------------------------------------------------------------------
  function hasCycle(head) {
     let fast = head
     let slow = head
@@ -84,3 +89,73 @@ function removeNthFromEnd(head, n) {
     }
     return false
 }
+//--------------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------------
+// Merge sort --> split the list into two recursively into small pieces and sort and merge them
+var sortList = function(head) {
+    if(!head || !head.next){
+        return head
+    }
+    let [right, left] = split(head)
+    right = sortList(right)
+    left = sortList(left)
+    head = sortAndMergeLists(left, right)
+    return head
+};
+
+/**
+Split the linked list:
+case 1:
+    { head: [4,2,1,3,5] }
+    { left: [4,2,1], right: [3,5] }
+case 2:
+    { head: [4,2,3,5] }
+    { left: [4,2], right: [3,5] }
+ */
+
+function split(list){
+    let slow = list
+    let fast = list.next
+    while(fast && fast.next){
+        slow = slow.next
+        fast = fast.next.next
+    }
+    let right = slow.next
+    slow.next = null
+    let left = list
+    return [right, left]
+}
+
+/**
+  Sort and Join two lists
+  ex. list1 =[1,4,5], list2=[1,2,3,6]
+  out --> [1,1,2,3,4,5,6]
+ */
+
+function sortAndMergeLists(list1, list2){
+    let head = new ListNode()
+    let tail = head
+    while(list1 && list2){
+        if(list1.val <= list2.val){
+            tail.next = list1
+            list1 = list1.next
+        }else{
+            tail.next = list2
+            list2 = list2.next
+        }
+        tail = tail.next
+    }
+    while(list1){
+        tail.next = list1
+        list1 = list1.next
+        tail = tail.next
+    }
+    while(list2){
+        tail.next = list2
+        list2 = list2.next
+        tail = tail.next
+    }
+    return head.next
+}
+//--------------------------------------------------------------------------------------------------------------
