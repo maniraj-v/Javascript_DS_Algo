@@ -35,7 +35,7 @@ function reverse(currentNode){
     return reverseList
 }
 
-// Merge node2 with node1 alternatively (inplace node1)
+// Solution 1 - Merge node2 with node1 alternatively (inplace node1)
 function alternateMerge(node1, node2){
     while(node2 && node2.next){
         const bkupNode2Next = node2.next
@@ -46,6 +46,32 @@ function alternateMerge(node1, node2){
         // move pointer by 2 for node 1
         node1 = node1.next.next
     }
+}
+//--------------------------------------------------------------------------------------------------------------
+// Solution 2 - Alternate merging 
+// ex: list1 = [1,3,5,7] list2=[2,4] out=[1,2,3,4,5,7]
+
+function ziplist(head1, head2){
+  let current1 = head1.next;
+  let current2 = head2;
+  let tail = head1;
+  let count =0
+  while(current1 && current2){
+    console.log(head1)
+    if(count %2 ===0){
+      tail.next = current2
+      current2 = current2.next
+    }else{
+      tail.next = current1
+      current1 = current1.next      
+    }
+    tail = tail.next
+    count +=1
+  }
+  
+  if(current1) tail.next = current1
+  if(current2) tail.next = current2
+  return head1
 }
 //--------------------------------------------------------------------------------------------------------------
 
@@ -158,4 +184,27 @@ function sortAndMergeLists(list1, list2){
     }
     return head.next
 }
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+// Rotate a linked list
+// Option 1 -find length of list and do k % length - actual length. Then split and join
+//or
+//Option 2 - Form circular list and traverse until k=0, change head and disconnect circular list
+function rotateLinkedList(head, k){
+  let current = head;
+
+  while(current.next){
+    current = current.next
+  }
+  current.next = head;
+  // console.log(current)  -- cicular linked list
+  while(k!=0){
+    current = current.next
+    k--
+  }
+  head = current.next
+  current.next = null
+  return head
+}
+console.log(rotateLinkedList(a, 2))
 //--------------------------------------------------------------------------------------------------------------
