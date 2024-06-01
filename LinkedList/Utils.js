@@ -188,7 +188,39 @@ function sortAndMergeLists(list1, list2){
 //--------------------------------------------------------------------------------------------------------------
 // Rotate a linked list
 // Option 1 -find length of list and do k % length - actual length. Then split and join
-//or
+var rotateRight = function(head, k) {
+    // Early return if k=0 or single element
+    if(head === null || head.next === null || k=== 0){
+        return head
+    }
+    let length = 0
+    let currentNode = head
+    while(currentNode){
+        length++
+        currentNode = currentNode.next
+    }
+    // Early return if k=0
+    if(k%length === 0){
+        return head
+    }
+    // Important :: Split position is from reverse
+    let splitPosition = length- k%length // Handle case: k could be more than length
+    currentNode = head
+    while(splitPosition > 1){
+        splitPosition--
+        currentNode = currentNode.next
+    }
+    let temp = currentNode.next
+    currentNode.next = null
+    const joinNode = head
+    head = temp
+    while(temp.next){
+        temp = temp.next
+    }
+    temp.next = joinNode
+    return head
+};
+
 //Option 2 - Form circular list and traverse until k=0, change head and disconnect circular list
 function rotateLinkedList(head, k){
   let current = head;
