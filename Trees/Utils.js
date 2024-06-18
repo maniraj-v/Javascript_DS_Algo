@@ -15,7 +15,6 @@ var invertTree = function (root) {
 // Invert tree - DFS iterative approach
 function invertTree(root) {
   const stack = [root];
-
   while (stack.length) {
     const node = stack.pop();
     if (node != null) {
@@ -45,47 +44,6 @@ function getMaxDepth(root) {
   }
   traverse(root, 1);
   return maxDepth;
-}
-// ------------------------------------------------------------------------------------------
-// Important Pattern: Bottom up approach since path may not pass thru root
-//-------------------------------------------------------------------------------------------
-// Diameter of a binary tree is the length of the longest path between any two nodes in a tree.
-// This path may or may not pass through the root.
-var diameterOfBinaryTree = function (root) {
-  let diameter = 0;
-  if (!root) return diameter;
-  function traverse(root) {
-    if (!root) return 0;
-    const left = traverse(root.left);
-    const right = traverse(root.right);
-    diameter = Math.max(diameter, left + right);
-    // console.log({right, left, diameter})
-    return 1 + Math.max(left, right);
-  }
-  traverse(root);
-  return diameter;
-};
-//-------------------------------------------------------------------------------------------
-function checkIsBalanced(root) {
-  if (root === null) return true;
-  let isBalanced = true;
-  function traverse(node) {
-    if (node === null) {
-      return 0;
-    }
-    const left = traverse(node.left);
-    // optimised to return early if left tree itself unbalanced
-    if (isBalanced === false) {
-      return;
-    }
-    const right = traverse(node.right);
-    if (isBalanced) {
-      isBalanced = Math.abs(left - right) <= 1;
-    }
-    return 1 + Math.max(left, right);
-  }
-  traverse(root);
-  return isBalanced;
 }
 //-------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------
@@ -147,3 +105,28 @@ function hasPathSum(root, targetSum) {
   traverse(root, root.val);
   return hasPathFound;
 }
+//-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
+/* Count good nodes in tree 
+  Node x is considered good if the path from the root of the tree to the node x contains no nodes 
+  with a value greater than the value of node x
+  Hint: In the path, if node value is greater than pathMax, add to result
+*/
+function goodNodes(root) {
+  let count = 0;
+  if (root === null) {
+    return count;
+  }
+  function traverse(node, pathMax) {
+    if (node.val >= pathMax) {
+      pathMax = node.val;
+      count++;
+    }
+    node.left && traverse(node.left, pathMax);
+    node.right && traverse(node.right, pathMax);
+  }
+  traverse(root, -Infinity);
+  return count;
+}
+//-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
