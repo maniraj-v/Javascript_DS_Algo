@@ -1,5 +1,5 @@
 /*
-
+Refer: Trees_introduction image file
 Depth First Search 
 
 -- can be done recursive (using pre, post, inorder traversal techniques)
@@ -9,6 +9,8 @@ Breadth First Search
 
 -- can be done iterative (using queue) (BFS also called as Level order traversal)
 
+Important notes:
+-- Inorder traversal gives result in sorted order
 */
 //-------------------------------------------------------------------------------------------
 // DFS - Iterative way using stack

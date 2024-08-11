@@ -129,4 +129,24 @@ function goodNodes(root) {
   return count;
 }
 //-------------------------------------------------------------------------------------------
+// Validate whethere BST is correct or not
+// Refer: image for clear picture of min,max flow to depth of tree
+var isValidBST = function (root) {
+  function traverse(node, min, max) {
+    if (node === null) {
+      return true;
+    }
+    if (node.val >= max) {
+      return false;
+    }
+    if (node.val <= min) {
+      return false;
+    }
+    return (
+      traverse(node.left, min, node.val) && traverse(node.right, node.val, max)
+    );
+  }
+  return traverse(root, -Infinity, Infinity);
+};
+//-------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------

@@ -40,3 +40,21 @@ function checkIsBalanced(root) {
   return isBalanced;
 }
 //-------------------------------------------------------------------------------------------
+// Return Kth Smallest element in tree
+// Approach : Inorder traversal return sort of tree
+function kthSmallest(root, k) {
+  let result,
+    isKthElementFound = false;
+  function traverse(node) {
+    !isKthElementFound && node.left && traverse(node.left);
+    k--;
+    if (k === 0) {
+      result = node.val;
+      isKthElementFound = true;
+      return;
+    }
+    !isKthElementFound && node.right && traverse(node.right);
+  }
+  traverse(root);
+  return result;
+}

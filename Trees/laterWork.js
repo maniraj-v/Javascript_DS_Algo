@@ -1,5 +1,6 @@
 // inorder traversal - iterative way
-
+// Solve many questions iterative way using inorder
+// https://leetcode.com/problems/validate-binary-search-tree/solutions/32112/learn-one-iterative-inorder-traversal-apply-it-to-multiple-tree-questions-java-solution
 var inorderTraversal = function (root) {
   // Initialize an empty array to store the result (in-order traversal)
   const res = [];
