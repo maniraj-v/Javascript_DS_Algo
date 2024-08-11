@@ -27,3 +27,11 @@ function pipeAll(...functions) {
 }
 const pipedCalc = pipeAll(addBy2, multiplyBy5, divideBy3);
 console.log(pipedCalc(10));
+
+// Directly infinite without compose and composeAll
+
+function composeAllDirect(...funcs) {
+  return function (x) {
+    return funcs.reduceRight((acc, fn) => fn(acc), x);
+  };
+}
