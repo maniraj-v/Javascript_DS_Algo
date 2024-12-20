@@ -5,3 +5,18 @@ https://www.debugbear.com/blog/resource-hints-rel-preload-prefetch-preconnect
 https://medium.com/reloading/preload-prefetch-and-priorities-in-chrome-776165961bbf
 
 https://web.dev/articles/apply-instant-loading-with-prpl
+
+
+LCP
+
+Optimize when the resource is discovered
+To ensure your LCP resource starts loading as early as possible, it's critical that the resource is discoverable in the initial HTML document response by the browser's preload scanner. For example, in the following cases, the browser can discover the LCP resource by scanning the HTML document response:
+
+The LCP element is an <img> element, and its src or srcset attributes are present in the initial HTML markup.
+The LCP element requires a CSS background image, but that image is preloaded using <link rel="preload"> in the HTML markup (or using a Link header).
+The LCP element is a text node that requires a web font to render, and the font is loaded using <link rel="preload"> in the HTML markup (or using a Link header).
+Here are some examples where the LCP resource cannot be discovered from scanning the HTML document response:
+
+The LCP element is an <img> that is dynamically added to the page using JavaScript.
+The LCP element is lazily loaded with a JavaScript library that hides its src or srcset attributes (often as data-src or data-srcset).
+The LCP element requires a CSS background image.
