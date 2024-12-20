@@ -42,4 +42,77 @@
    - `PUT` replaces the entire resource with the updated one.
    - `PATCH` modifies specific fields of a resource.
 
+8. **How do you optimize API calls in a React application?** 
 
+Use caching (e.g., SWR, React Query).
+Batch multiple API calls if possible.
+Use debounce or throttle for user-triggered events (e.g., search input).
+Avoid unnecessary API calls by managing state effectively.
+9. **What are query parameters and path parameters? How are they different?**
+
+Query Parameters: Passed in the URL after ? (e.g., /api/users?role=admin).
+Path Parameters: Part of the URL structure (e.g., /api/users/{id}).
+
+
+## Advanced Questions
+
+11. **What is the difference between REST and GraphQL?**  
+    REST exposes fixed endpoints for specific resources, while GraphQL allows querying specific fields and relationships, reducing over-fetching and under-fetching of data.
+
+12. **How do you manage pagination in a REST API?**  
+    Use query parameters like `page` and `limit`:  
+    Example: `/api/users?page=2&limit=10`.  
+    The API response should include metadata like `total_pages` or `next`.
+
+13. **How do you secure REST APIs on the frontend?**  
+    - Use HTTPS for secure communication.  
+    - Include access tokens in headers (e.g., `Authorization: Bearer <token>`).  
+    - Sanitize user inputs to prevent injection attacks.  
+    - Implement rate-limiting to prevent abuse.
+
+14. **Explain the concept of idempotency in REST APIs. Which HTTP methods are idempotent?**  
+    An operation is idempotent if performing it multiple times produces the same result.  
+    `GET`, `PUT`, `DELETE`, and `HEAD` are idempotent, while `POST` is not.
+
+15. **How do you handle long-running tasks in a REST API?**  
+    Use polling or WebSockets:  
+    - **Polling**: The client periodically sends requests to check the status.  
+    - **WebSockets**: Use a persistent connection for real-time updates.
+
+16. **How do you handle rate-limiting errors (e.g., 429 Too Many Requests)?**  
+    - Respect the `Retry-After` header if provided.  
+    - Implement exponential backoff for retries.
+
+17. **What are HATEOAS and how do they relate to REST?**  
+    HATEOAS (Hypermedia as the Engine of Application State) is a principle of REST where the server provides links in the response to navigate resources. Example:
+    ```json
+    {
+      "user": {
+        "id": 1,
+        "name": "John Doe",
+        "links": {
+          "self": "/api/users/1",
+          "orders": "/api/users/1/orders"
+        }
+      }
+    }
+    ```
+
+**How do you handle API versioning on the frontend?**
+
+Use versioned endpoints like /api/v1/resource.
+Abstract API calls into a service layer to easily switch versions.
+
+
+**Explain how to upload a file using REST API in a React app.**
+Use FormData to send files:
+
+javascript
+Copy code
+const formData = new FormData();
+formData.append('file', selectedFile);
+
+fetch('/api/upload', {
+  method: 'POST',
+  body: formData,
+}).then(response => console.log(response));
