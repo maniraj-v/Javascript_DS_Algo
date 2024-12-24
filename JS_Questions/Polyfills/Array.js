@@ -4,8 +4,15 @@
 /* isArray
 /* *********************************************************************** */
 
-Object.prototype.toString.call(value) === '[object Array]';
+Array.isArrayChecker = function(arg){
+return Object.prototype.toString.call(arg) === '[object Array]';
+}
 
+console.log(Array.isArrayChecker('aa'))
+/* *********************************************************************** */
+/* Note: to detect any datatype using Object proto method
+/* Object.prototype.toString.call({}) --> '[object Object]'
+/* Object.prototype.toString.call(function(){}) --> '[object Function]'
 /* *********************************************************************** */
 /* Flat
 /* *********************************************************************** */
