@@ -1,13 +1,17 @@
 // Debounce:
 // Execute cb after specified duration, cancel that cb if any new call comes inbetween
-function debounce(cb, dur = 1000) {
-  let timer = null;
+// Note: Taken care of context(this)
+function debounce(func, delay) {
+  let timerId = null
   return function (...args) {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      cb(...args);
-    }, dur);
-  };
+    if (timerId) {
+      clearTimeout(timerId)
+    }
+    const context = this
+    timerId = setTimeout(() => {
+      func.apply(context, args)
+    }, delay)
+  }
 }
 
 function print(value) {
