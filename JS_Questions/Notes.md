@@ -1,4 +1,4 @@
-*** Object hasOwn vs hasOwnProperty ***
+## Object hasOwn vs hasOwnProperty
 
 ```js
 const obj = {
