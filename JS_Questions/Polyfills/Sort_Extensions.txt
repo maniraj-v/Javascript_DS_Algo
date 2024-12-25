@@ -1,0 +1,100 @@
+function sortBy(arr, iteratee) {
+    // Function to get the value at a nested property path
+    function getNestedValue(obj, path) {
+        const keys = path.split('.'); // Split the path into keys (e.g., 'address.city' becomes ['address', 'city'])
+        let value = obj;
+        for (let key of keys) {
+            value = value[key];
+            if (value === undefined) return undefined; // Return undefined if the path is invalid
+        }
+        return value;
+    }
+
+    // Handle iteratee as a function
+    if (typeof iteratee === 'function') {
+        return arr.slice().sort((a, b) => {
+            const valueA = iteratee(a);
+            const valueB = iteratee(b);
+            return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+        });
+    }
+
+    // Handle iteratee as a string or array of strings (property names or paths)
+    if (typeof iteratee === 'string') {
+        return arr.slice().sort((a, b) => {
+            const valueA = getNestedValue(a, iteratee);
+            const valueB = getNestedValue(b, iteratee);
+            return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+        });
+    }
+
+    if (Array.isArray(iteratee)) {
+        return arr.slice().sort((a, b) => {
+            for (let i = 0; i < iteratee.length; i++) {
+                const prop = iteratee[i];
+                const valueA = getNestedValue(a, prop);
+                const valueB = getNestedValue(b, prop);
+                if (valueA !== valueB) {
+                    return valueA < valueB ? -1 : 1;
+                }
+            }
+            return 0; // If all properties are equal, return 0.
+        });
+    }
+
+    return arr.slice(); // Default case: return the original array if iteratee is invalid.
+}
+
+
+Example Usage:
+Example 1: Sorting by Nested Property (address.city)
+javascript
+Copy code
+const people = [
+    { name: 'Alice', address: { city: 'New York', zip: '10001' } },
+    { name: 'Bob', address: { city: 'San Francisco', zip: '94101' } },
+    { name: 'Charlie', address: { city: 'Chicago', zip: '60601' } }
+];
+
+// Sort by nested property 'address.city'
+const sortedByCity = sortBy(people, 'address.city');
+console.log(sortedByCity);
+// Output: [
+//   { name: 'Alice', address: { city: 'New York', zip: '10001' } },
+//   { name: 'Charlie', address: { city: 'Chicago', zip: '60601' } },
+//   { name: 'Bob', address: { city: 'San Francisco', zip: '94101' } }
+// ]
+Example 2: Sorting by Multiple Nested Properties (address.city and name)
+javascript
+Copy code
+const people = [
+    { name: 'Alice', address: { city: 'New York', zip: '10001' } },
+    { name: 'Bob', address: { city: 'San Francisco', zip: '94101' } },
+    { name: 'Charlie', address: { city: 'New York', zip: '60601' } }
+];
+
+// Sort by 'address.city' first, then by 'name'
+const sortedByCityThenName = sortBy(people, ['address.city', 'name']);
+console.log(sortedByCityThenName);
+// Output: [
+//   { name: 'Alice', address: { city: 'New York', zip: '10001' } },
+//   { name: 'Charlie', address: { city: 'New York', zip: '60601' } },
+//   { name: 'Bob', address: { city: 'San Francisco', zip: '94101' } }
+// ]
+Example 3: Sorting by a Nested Property Using a Function
+javascript
+Copy code
+const people = [
+    { name: 'Alice', details: { age: 25, height: 160 } },
+    { name: 'Bob', details: { age: 30, height: 175 } },
+    { name: 'Charlie', details: { age: 20, height: 170 } }
+];
+
+// Sort by a nested property using a function (e.g., 'details.age')
+const sortedByAge = sortBy(people, (person) => person.details.age);
+console.log(sortedByAge);
+// Output: [
+//   { name: 'Charlie', details: { age: 20, height: 170 } },
+//   { name: 'Alice', details: { age: 25, height: 160 } },
+//   { name: 'Bob', details: { age: 30, height: 175 } }
+// ]
