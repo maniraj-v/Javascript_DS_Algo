@@ -132,3 +132,21 @@ Array.prototype.myReverse = function(){
   return arr
 }
 console.log(array.myReverse())
+
+/* *********************************************************************** */
+/* Push
+/* *********************************************************************** */
+
+const arr = [1,2]
+
+Array.prototype.myPush = function(){
+	const arr = this
+  const arrLen= this.length
+  let i = 0
+  while(i<arguments.length){
+			arr[arrLen + i] = arguments[i]
+      i++
+  }
+  return arr.length
+}
+console.log(arr.myPush(3,4), arr, arr.length)
