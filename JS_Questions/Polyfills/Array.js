@@ -144,7 +144,7 @@ Array.prototype.myPush = function(){
   const arrLen= this.length
   let i = 0
   while(i<arguments.length){
-			arr[arrLen + i] = arguments[i]
+      arr[arrLen + i] = arguments[i]
       i++
   }
   return arr.length
@@ -153,14 +153,15 @@ console.log(arr.myPush(3,4), arr, arr.length)
 
 
 /* *********************************************************************** */
-/* Pop
+/* Pop  -- Important delete last element and also reduce this.length (else last element will contain sparse (undefined)
 /* *********************************************************************** */
 Array.prototype.pop = function() {
     if (this.length === 0) {
       return undefined;
     }
 
-    var poppedElement = this[this.length - 1]; // Get the last element
+    const poppedElement = this[this.length - 1]; // Get the last element
+    delete this[this.length - 1]
     this.length = this.length - 1; // Reduce the array length by 1
 
     return poppedElement; // Return the popped element
