@@ -111,3 +111,24 @@ console.log(
     return accm + curr;
   }, 10)
 );
+
+/* *********************************************************************** */
+/* Reverse
+/* *********************************************************************** */
+
+const array = [1,2,3,4,5, 6]
+
+Array.prototype.myReverse = function(){
+	const arr = this
+  let start = 0
+  let end = arr.length - 1
+  while(start < end){
+  		const temp = arr[start]
+      arr[start] = arr[end]
+      arr[end] = temp
+      start++
+      end--
+  }
+  return arr
+}
+console.log(array.myReverse())
