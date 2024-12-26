@@ -166,3 +166,30 @@ Array.prototype.pop = function() {
 
     return poppedElement; // Return the popped element
   };
+
+
+/* *********************************************************************** */
+/* Shift  -- Shift all elements from index 1 to the left and also reduce this.length (else last element will contain sparse (undefined)
+/* *********************************************************************** */
+
+const array = [1,2,3,4,5,6]
+
+Array.prototype.myShift = function() {
+    if (this.length === 0) {
+      return undefined;
+    }
+
+    var removedElement = this[0];
+		for(let i=1;i<this.length;i++){
+    		this[i-1] = this[i]
+        delete this[i]
+    }
+    this.length = this.length -1
+    return removedElement; 
+  };
+  
+console.log(array.myShift(), array)
+
+/* *********************************************************************** */
+/* UnShift  -- solve this and put solution below
+/* *********************************************************************** */
