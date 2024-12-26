@@ -193,3 +193,25 @@ console.log(array.myShift(), array)
 /* *********************************************************************** */
 /* UnShift  -- solve this and put solution below
 /* *********************************************************************** */
+
+
+
+/* *********************************************************************** */
+/* Sort  -- using bubble sort
+/* *********************************************************************** */
+const array = [8,12,7,1,2,6,5]
+
+ Array.prototype.sort = function (compareFunction) {
+    for (let i = 0; i < this.length - 1; i++) {
+      for (let j = i+1; j < this.length; j++) {
+        if (compareFunction ? compareFunction(this[i], this[j]) > 0 : String(this[i]) > String(this[j])) {
+          const temp = this[j];
+          this[j] = this[i];
+          this[i] = temp;
+        }
+      }
+    }
+    return this;
+  };
+
+console.log(array.sort((a,b) => a-b))
