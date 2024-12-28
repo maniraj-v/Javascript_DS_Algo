@@ -1,40 +1,63 @@
-  MyPromise = function(executor) {
-    var self = this;
-    self.status = 'pending';
-    self.value = null;
-    self.reason = null;
-    self.onFulfilledCallbacks = [];
-    self.onRejectedCallbacks = [];
+MyPromise = function (executor) {
+  var self = this;
+  self.status = 'pending';
+  self.value = null;
+  self.reason = null;
+  self.onFulfilledCallbacks = [];
+  self.onRejectedCallbacks = [];
 
-    function resolve(value) {
-      if (self.status === 'pending') {
-        self.status = 'fulfilled';
-        self.value = value;
-        self.onFulfilledCallbacks.forEach(function(callback) {
-          callback(self.value);
-        });
-      }
+  function resolve(value) {
+    if (self.status === 'pending') {
+      self.status = 'fulfilled';
+      self.value = value;
+      self.onFulfilledCallbacks.forEach(function (callback) {
+        callback(self.value);
+      });
     }
+  }
 
-    function reject(reason) {
-      if (self.status === 'pending') {
-        self.status = 'rejected';
-        self.reason = reason;
-        self.onRejectedCallbacks.forEach(function(callback) {
-          callback(self.reason);
-        });
-      }
+  function reject(reason) {
+    if (self.status === 'pending') {
+      self.status = 'rejected';
+      self.reason = reason;
+      self.onRejectedCallbacks.forEach(function (callback) {
+        callback(self.reason);
+      });
     }
+  }
 
-    executor(resolve, reject);
-  };
+  executor(resolve, reject);
+};
 
-  MyPromise.prototype.then = function(onFulfilled, onRejected) {
-    var self = this;
-    var promise = new Promise(function(resolve, reject) {
-      if (self.status === 'fulfilled') {
+MyPromise.prototype.then = function (onFulfilled, onRejected) {
+  var self = this;
+  var promise = new Promise(function (resolve, reject) {
+    if (self.status === 'fulfilled') {
+      try {
+        var result = onFulfilled(self.value);
+        if (result instanceof Promise) {
+          result.then(resolve, reject);
+        } else {
+          resolve(result);
+        }
+      } catch (e) {
+        reject(e);
+      }
+    } else if (self.status === 'rejected') {
+      try {
+        var result = onRejected(self.reason);
+        if (result instanceof Promise) {
+          result.then(resolve, reject);
+        } else {
+          resolve(result);
+        }
+      } catch (e) {
+        reject(e);
+      }
+    } else {
+      self.onFulfilledCallbacks.push(function (value) {
         try {
-          var result = onFulfilled(self.value);
+          var result = onFulfilled(value);
           if (result instanceof Promise) {
             result.then(resolve, reject);
           } else {
@@ -43,9 +66,10 @@
         } catch (e) {
           reject(e);
         }
-      } else if (self.status === 'rejected') {
+      });
+      self.onRejectedCallbacks.push(function (reason) {
         try {
-          var result = onRejected(self.reason);
+          var result = onRejected(reason);
           if (result instanceof Promise) {
             result.then(resolve, reject);
           } else {
@@ -54,51 +78,27 @@
         } catch (e) {
           reject(e);
         }
-      } else {
-        self.onFulfilledCallbacks.push(function(value) {
-          try {
-            var result = onFulfilled(value);
-            if (result instanceof Promise) {
-              result.then(resolve, reject);
-            } else {
-              resolve(result);
-            }
-          } catch (e) {
-            reject(e);
-          }
-        });
-        self.onRejectedCallbacks.push(function(reason) {
-          try {
-            var result = onRejected(reason);
-            if (result instanceof Promise) {
-              result.then(resolve, reject);
-            } else {
-              resolve(result);
-            }
-          } catch (e) {
-            reject(e);
-          }
-        });
-      }
-    });
-    return promise;
-  };
+      });
+    }
+  });
+  return promise;
+};
 
-  MyPromise.prototype.catch = function(onRejected) {
-    return this.then(null, onRejected);
-  };
+MyPromise.prototype.catch = function (onRejected) {
+  return this.then(null, onRejected);
+};
 
-  MyPromise.resolve = function(value) {
-    return new Promise(function(resolve) {
-      resolve(value);
-    });
-  };
+MyPromise.resolve = function (value) {
+  return new Promise(function (resolve) {
+    resolve(value);
+  });
+};
 
-  MyPromise.reject = function(reason) {
-    return new Promise(function(resolve, reject) {
-      reject(reason);
-    });
-  };
+MyPromise.reject = function (reason) {
+  return new Promise(function (resolve, reject) {
+    reject(reason);
+  });
+};
 
 
 // Example usage of MyPromise:
@@ -123,5 +123,5 @@ myPromise
   });
 
 MyPromise.resolve('test static').then(result => {
-    console.log(result); 
-  })
+  console.log(result);
+})
