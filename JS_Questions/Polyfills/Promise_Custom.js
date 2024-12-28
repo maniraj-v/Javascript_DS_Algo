@@ -1,4 +1,4 @@
-MyPromise = function (executor) {
+Promise = function (executor) {
   var self = this;
   self.status = 'pending';
   self.value = null;
@@ -29,7 +29,7 @@ MyPromise = function (executor) {
   executor(resolve, reject);
 };
 
-MyPromise.prototype.then = function (onFulfilled, onRejected) {
+Promise.prototype.then = function (onFulfilled, onRejected) {
   var self = this;
   var promise = new Promise(function (resolve, reject) {
     if (self.status === 'fulfilled') {
@@ -84,33 +84,33 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
   return promise;
 };
 
-MyPromise.prototype.catch = function (onRejected) {
+Promise.prototype.catch = function (onRejected) {
   return this.then(null, onRejected);
 };
 
-MyPromise.resolve = function (value) {
+Promise.resolve = function (value) {
   return new Promise(function (resolve) {
     resolve(value);
   });
 };
 
-MyPromise.reject = function (reason) {
+Promise.reject = function (reason) {
   return new Promise(function (resolve, reject) {
     reject(reason);
   });
 };
 
 
-// Example usage of MyPromise:
+// Example usage of Promise:
 
-const myPromise = new MyPromise((resolve, reject) => {
+const Promise = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve("Success!");
     // reject("Error!");
   }, 1000);
 });
 
-myPromise
+Promise
   .then(result => {
     console.log(result); // "Success!"
     return "Next step";
@@ -122,6 +122,6 @@ myPromise
     console.log(error);
   });
 
-MyPromise.resolve('test static').then(result => {
+Promise.resolve('test static').then(result => {
   console.log(result);
 })
