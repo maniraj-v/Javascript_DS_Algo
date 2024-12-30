@@ -5,6 +5,11 @@
 - **document.querySelector(selector)** – Returns the first element that matches the CSS selector.
 - **document.querySelectorAll(selector)** – Returns all elements that match the CSS selector as a NodeList.
 - **node.children** – Returns a live HTMLCollection of all child elements (ignores text and comment nodes).
+- **document.createElement(tagName)** – Creates a new element node of the specified tag name.
+
+    ```javascript
+    const newElement = document.createElement('div');
+    ```
 
     ```javascript
     const children = node.children; // Array-like collection of child elements.
