@@ -21,3 +21,11 @@ for (var i = 0; i < 5; i++) {
   }, 1000);
 }
 ```
+
+## What would be the output of the following code snippet if we execute it as it is.
+```js
+const first = 2 in [1, 2];
+const second = '2' in [0, 1, 2];
+
+console.log(first, second);
+```
