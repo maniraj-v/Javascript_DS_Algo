@@ -24,6 +24,15 @@ for (var i = 0; i < 5; i++) {
 
 ## What would be the output of the following code snippet if we execute it as it is.
 ```js
+for (var i = 0; i < 5; i++) {
+  setTimeout(function () {
+    console.log(i);
+  }, 10);
+}
+```
+
+## What would be the output of the following code snippet if we execute it as it is.
+```js
 const first = 2 in [1, 2];
 const second = '2' in [0, 1, 2];
 
