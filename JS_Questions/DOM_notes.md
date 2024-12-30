@@ -62,6 +62,75 @@
     const nextElement = node.nextElementSibling;
     ```
 
+**node.parentNode** – Returns the parent node of the current node.
+
+Example:
+```javascript
+const parent = node.parentNode;
+```
+This is useful for traversing up the DOM tree.
+
+**node.contains(childNode)** – Checks if the node contains the specified child node.
+
+Example:
+```javascript
+const containsChild = node.contains(childNode); // Returns true if childNode is a descendant of node
+```
+
+**node.hasChildNodes()** – Checks if the node has any child nodes.
+
+Example:
+```javascript
+const hasChildren = node.hasChildNodes();
+```
+
+**node.getBoundingClientRect()** – Returns the size of the element and its position relative to the viewport (useful for positioning).
+
+Example:
+```javascript
+const rect = node.getBoundingClientRect();
+console.log(rect.top, rect.left, rect.width, rect.height);
+```
+
+**node.scrollTop** – Gets or sets the number of pixels that the content of an element is scrolled vertically.
+
+Example:
+```javascript
+const scrollPosition = node.scrollTop; // How far an element is scrolled down
+node.scrollTop = 100; // Set scroll position
+```
+
+**node.scrollLeft** – Gets or sets the number of pixels that the content of an element is scrolled horizontally.
+
+Example:
+```javascript
+const scrollLeftPosition = node.scrollLeft;
+node.scrollLeft = 50; // Set horizontal scroll position
+```
+
+**node.offsetHeight** – Returns the height of the element including padding, border, and scrollbars, but excluding margins.
+
+Example:
+```javascript
+const offsetHeight = node.offsetHeight;
+```
+
+**node.offsetWidth** – Returns the width of the element including padding, border, and scrollbars, but excluding margins.
+
+Example:
+```javascript
+const offsetWidth = node.offsetWidth;
+```
+
+**node.style** – Allows you to get or set inline styles of an element.
+
+Example:
+```javascript
+node.style.color = 'red'; // Set inline style
+const color = node.style.color; // Get inline style
+```
+
+
 # Element Attributes and Properties
 
 - **node.tagName** – Returns the tag name of the element (uppercase).
@@ -176,6 +245,21 @@
     parentNode.replaceChild(newElement, oldElement);
     ```
 
+
+- **node.cloneNode(deep)** – Creates a copy of the node. If deep is true, it clones the node and all of its descendants.
+
+Example:
+```javascript
+const clone = node.cloneNode(true); // Clones the node and its children
+```
+
+- **node.remove()** – Removes the current node from the DOM tree.
+
+Example:
+```javascript
+node.remove(); // Removes the node
+```
+
 # Event Handling
 
 - **node.addEventListener(type, listener)** – Attaches an event listener to the element.
@@ -202,6 +286,11 @@
     ```javascript
     event.target; // gives you the element that was clicked or interacted with.
     ```
+- **event.currentTarget** – Refers to the element to which the event listener is attached.
+
+```javascript
+const currentTarget = event.currentTarget;
+```
 
 - **event.preventDefault()** – Prevents the default action associated with the event.
 
