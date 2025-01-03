@@ -1,0 +1,27 @@
+// Moore Voting Algorithm is an efficient way to find the majority element (an element that appears more than half the time in an array).
+function mooreVotingStrings(strs) {
+  let candidate = null;
+  let count = 0;
+
+  // Phase 1: Find the candidate string
+  for (let str of strs) {
+    if (count === 0) {
+      candidate = str;
+    }
+    count += (str === candidate) ? 1 : -1;
+  }
+
+  // Phase 2: Verify the candidate
+  count = 0;
+  for (let str of strs) {
+    if (str === candidate) {
+      count++;
+    }
+  }
+
+  return count > Math.floor(strs.length / 2) ? candidate : null;
+}
+
+// Example usage
+const strs = ["apple", "banana", "apple", "apple", "orange"];
+console.log(mooreVotingStrings(strs));  // Output: apple
