@@ -1,5 +1,4 @@
 // Ref : https://medium.com/geekculture/doubly-linked-lists-javascript-b13cc21ca59d
-// Just understand the basics, implementation will rarely be asked
 class Node{
   constructor(value){
     this.val = value
@@ -32,31 +31,28 @@ class DoublyLinkedList{
     this.size++
   }
 
-  prepend(val){
+   // Display forward
+  displayForward() {
+    let current = this.head;
+    while (current) {
+      console.log(current.data);
+      current = current.next;
+    }
   }
 
-  insert(val, index){
-
-  }
-
-  reverse(){
-
-  }
-
-  remove(index){
-
-  }
-
-  print(){
-
+  // Display backward
+  displayBackward() {
+    let current = this.tail;
+    while (current) {
+      console.log(current.data);
+      current = current.prev;
+    }
   }
 }
 
-const list = new DoublyLinkedList()
-
-list.append(1);
-list.append(2);
-list.append(3);
-
-
-console.log({list})
+const dll = new DoublyLinkedList();
+dll.append(10);
+dll.append(20);
+dll.append(30);
+dll.displayForward();   // Output: 10 20 30
+dll.displayBackward();  // Output: 30 20 10
