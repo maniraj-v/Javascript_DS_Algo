@@ -1,5 +1,5 @@
 // Ref : https://medium.com/geekculture/doubly-linked-lists-javascript-b13cc21ca59d
-
+// Just understand the basics, implementation will rarely be asked
 class Node{
   constructor(value){
     this.val = value
