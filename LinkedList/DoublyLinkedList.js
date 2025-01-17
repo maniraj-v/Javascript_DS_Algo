@@ -1,4 +1,6 @@
 // Ref : https://medium.com/geekculture/doubly-linked-lists-javascript-b13cc21ca59d
+// usage - traverse bidirectional forwards or backwards
+// usage - undo/redo, browser history back/front, LRU cache
 class Node{
   constructor(value){
     this.val = value
