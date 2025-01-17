@@ -1,0 +1,83 @@
+class Node {
+  constructor(key, value) {
+    this.key = key;
+    this.value = value;
+    this.prev = null;
+    this.next = null;
+  }
+}
+
+class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.cache = new Map();  // Hash Map to store key-value pairs
+    this.head = new Node(0, 0);  // Dummy head node
+    this.tail = new Node(0, 0);  // Dummy tail node
+    this.head.next = this.tail;  // Initializing the doubly linked list
+    this.tail.prev = this.head;
+  }
+
+  // Move a node to the front (most recently used)
+  moveToFront(node) {
+    this.removeNode(node);
+    this.addNode(node);
+  }
+
+  // Add a node right after the head (most recently used)
+  addNode(node) {
+    node.next = this.head.next;
+    node.prev = this.head;
+    this.head.next.prev = node;
+    this.head.next = node;
+  }
+
+  // Remove a node from the doubly linked list
+  removeNode(node) {
+    const prev = node.prev;
+    const next = node.next;
+    prev.next = next;
+    next.prev = prev;
+  }
+
+  // Get the value from the cache
+  get(key) {
+    if (!this.cache.has(key)) return -1;  // If the key doesn't exist
+    const node = this.cache.get(key);
+    this.moveToFront(node);  // Move the accessed node to the front
+    return node.value;
+  }
+
+  // Put a key-value pair in the cache
+  put(key, value) {
+    if (this.cache.has(key)) {
+      const node = this.cache.get(key);
+      node.value = value;  // Update the value
+      this.moveToFront(node);  // Move it to the front (most recently used)
+    } else {
+      if (this.cache.size >= this.capacity) {
+        const leastUsed = this.tail.prev;  // The least recently used item
+        this.removeNode(leastUsed);  // Remove it
+        this.cache.delete(leastUsed.key);  // Delete from cache
+      }
+      const newNode = new Node(key, value);
+      this.cache.set(key, newNode);
+      this.addNode(newNode);  // Add the new node to the front
+    }
+  }
+}
+
+// Testing the LRUCache
+const lru = new LRUCache(3);
+
+lru.put(1, 1); // Cache is {1=1}
+lru.put(2, 2); // Cache is {1=1, 2=2}
+lru.put(3, 3); // Cache is {1=1, 2=2, 3=3}
+
+console.log(lru.get(1));    // Returns 1, Cache is {2=2, 3=3, 1=1}
+lru.put(4, 4);             // Cache is {3=3, 1=1, 4=4}, 2 is evicted
+
+console.log(lru.get(2));    // Returns -1 (not found)
+console.log(lru.get(3));    // Returns 3, Cache is {1=1, 4=4, 3=3}
+lru.put(5, 5);             // Cache is {4=4, 3=3, 5=5}, 1 is evicted
+console.log(lru.get(1));    // Returns -1 (not found)
+console.log(lru.get(4));    // Returns 4, Cache is {3=3, 5=5, 4=4}
