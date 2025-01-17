@@ -6,6 +6,8 @@
     push -- prepend O(1)
     pop -- removeFromFront O(1)
 
+    Note:  1 -> 2 -> 3 appending like this makes removal difficult O(n), so prepend it 3 -> 2 -> 1 to remove easily from front
+
     Queue [FIFO]
 
     push -- append O(1)
