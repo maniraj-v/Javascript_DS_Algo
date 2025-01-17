@@ -1,7 +1,7 @@
 /**
     Linked List Tail Pointer Implementation
 
-    Stack [LIFO]
+    Stack [LIFO] -- see implementation below
 
     push -- prepend O(1)
     pop -- removeFromFront O(1)
@@ -120,3 +120,33 @@ console.log("removed val", list.removeFromEnd());
 console.log("removed val", list.removeFromFront());
 list.print();
 console.log(list);
+
+
+
+
+class Stack extends LinkedList {
+  constructor() {
+    super();
+  }
+  // leverage prepend
+  push(val) {
+    this.prepend(val);
+  }
+  pop() {
+    this.removeFromFront();
+  }
+  peek() {
+    if (this.head) {
+      return this.head.val;
+    }
+    return null;
+  }
+}
+
+const stack = new Stack();
+stack.push(1);
+stack.push(2);
+stack.push(3);
+console.log(stack.peek());
+stack.pop();
+console.log(stack.peek());
