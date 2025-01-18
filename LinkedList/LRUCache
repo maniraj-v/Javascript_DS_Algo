@@ -1,7 +1,7 @@
 class Node {
-  constructor(key, value) {
+  constructor(key, val) {
     this.key = key;
-    this.value = value;
+    this.val = val;
     this.prev = null;
     this.next = null;
   }
@@ -9,75 +9,96 @@ class Node {
 
 class LRUCache {
   constructor(capacity) {
+    this.cache = new Map();
     this.capacity = capacity;
-    this.cache = new Map();  // Hash Map to store key-value pairs
-    this.head = new Node(0, 0);  // Dummy head node
-    this.tail = new Node(0, 0);  // Dummy tail node
-    this.head.next = this.tail;  // Initializing the doubly linked list
-    this.tail.prev = this.head;
+    this.head = null; // head being most used
+    this.tail = null; // tail being least used
   }
 
-  // Move a node to the front (most recently used)
-  moveToFront(node) {
-    this.removeNode(node);
-    this.addNode(node);
-  }
-
-  // Add a node right after the head (most recently used)
-  addNode(node) {
-    node.next = this.head.next;
-    node.prev = this.head;
-    this.head.next.prev = node;
-    this.head.next = node;
-  }
-
-  // Remove a node from the doubly linked list
-  removeNode(node) {
-    const prev = node.prev;
-    const next = node.next;
-    prev.next = next;
-    next.prev = prev;
-  }
-
-  // Get the value from the cache
   get(key) {
-    if (!this.cache.has(key)) return -1;  // If the key doesn't exist
-    const node = this.cache.get(key);
-    this.moveToFront(node);  // Move the accessed node to the front
-    return node.value;
-  }
-
-  // Put a key-value pair in the cache
-  put(key, value) {
     if (this.cache.has(key)) {
       const node = this.cache.get(key);
-      node.value = value;  // Update the value
-      this.moveToFront(node);  // Move it to the front (most recently used)
-    } else {
-      if (this.cache.size >= this.capacity) {
-        const leastUsed = this.tail.prev;  // The least recently used item
-        this.removeNode(leastUsed);  // Remove it
-        this.cache.delete(leastUsed.key);  // Delete from cache
+      if (node !== this.head) {
+        // delete node from current position
+        this.delete(node);
+        // add node to head
+        this.addToHead(node);
       }
-      const newNode = new Node(key, value);
-      this.cache.set(key, newNode);
-      this.addNode(newNode);  // Add the new node to the front
+      return node.val;
+    } else {
+      return null
+    }
+  }
+
+  set(key, val) {
+    if (this.cache.has(key)) {
+      const node = this.cache.get(key);
+      node.val = val;
+      // If the node is not at the head, move it to the head
+      if (node !== this.head) {
+        this.delete(node);
+        this.addToHead(node);
+      }
+      return;
+    }
+
+    if (this.cache.size >= this.capacity) {
+      const keyToDelete = this.tail.key;
+      // remove tail (least used)
+      this.delete(this.tail);
+      this.cache.delete(keyToDelete);
+    }
+
+    const node = new Node(key, val);
+    // add node to head
+    this.addToHead(node);
+    this.cache.set(key, node);
+  }
+
+  delete(node) {
+    const prev = node.prev;
+    const next = node.next;
+
+    if (prev) {
+      prev.next = next;
+    }
+
+    if (next) {
+      next.prev = prev;
+    }
+
+    // if node is the head, move head to next
+    if (node === this.head) {
+      this.head = next;
+    }
+
+    // if node is the tail, move tail to previous
+    if (node === this.tail) {
+      this.tail = prev;
+    }
+
+    node.prev = node.next = null; // clean up the node references
+  }
+
+  addToHead(node) {
+    if (this.head) {
+      node.next = this.head;
+      this.head.prev = node;
+      this.head = node;
+    } else {
+      this.head = node;
+      this.tail = node;
     }
   }
 }
 
-// Testing the LRUCache
-const lru = new LRUCache(3);
+const cache = new LRUCache(3);
+cache.set(1, "one");
+cache.set(2, "two");
+cache.set(3, "three");
+console.log(cache.get(1));
+console.log(cache.get(2));
+cache.set(4, "four");
+console.log(cache.get(1));
 
-lru.put(1, 1); // Cache is {1=1}
-lru.put(2, 2); // Cache is {1=1, 2=2}
-lru.put(3, 3); // Cache is {1=1, 2=2, 3=3}
-
-console.log(lru.get(1));    // Returns 1, Cache is {2=2, 3=3, 1=1}
-lru.put(4, 4);             // Cache is {3=3, 1=1, 4=4}, 2 is evicted
-
-console.log(lru.get(2));    // Returns -1 (not found)
-console.log(lru.get(3));    // Returns 3, Cache is {1=1, 4=4, 3=3}
-lru.put(5, 5);             // Cache is {4=4, 3=3, 5=5}, 1 is evicted
-console.log(lru.get(1));    // Returns -1 (not found)
-console.log(lru.get(4));    // Returns 4, Cache is {3=3, 5=5, 4=4}
+console.log(cache.cache);
