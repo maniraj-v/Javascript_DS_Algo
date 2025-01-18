@@ -1,102 +1,96 @@
-class Node{
-    constructor(key, value) {
-        this.key = key;
-        this.val = value;
-        this.next = this.prev = null;
-        this.freq = 1;
-    }
+class Node {
+  constructor(key, val) {
+    this.key = key;
+    this.val = val;
+    this.freq = 1; // Initial frequency is 1
+  }
 }
 
-class DoublyLinkedList {
-    constructor() {
-        this.head = new Node(null,null);
-        this.tail = new Node(null,null);
-        this.head.next = this.tail;
-        this.tail.prev = this.head;
-    }
-
-    insertHead(node) {
-        node.prev = this.head;
-        node.next = this.head.next;
-        this.head.next.prev = node;
-        this.head.next = node;
-    }
-
-    removeNode(node) {
-        let prev = node.prev;
-        let next = node.next;
-        prev.next = next;
-        next.prev = prev;
-    }
-
-    removeTail() {
-        let node = this.tail.prev;
-        this.removeNode(node);
-        return node.key;
-    }
-
-    isEmpty() {
-        return this.head.next.val == null;
-    }
-}
-
-/**
- * @param {number} capacity
- */
-var LFUCache = function(capacity) {
+class LFUCache {
+  constructor(capacity) {
     this.capacity = capacity;
-    this.currentSize = 0;
-    this.leastFreq = 0;
-    this.nodeHash = new Map();
-    this.freqHash = new Map();
-};
+    this.cache = new Map(); // Key -> Node (stores key-value pair)
+    this.freqMap = new Map(); // Frequency -> Set of Nodes
+    this.minFreq = 0; // To track the minimum frequency for eviction
+  }
 
-/** 
- * @param {number} key
- * @return {number}
- */
-LFUCache.prototype.get = function(key) {
-    let node = this.nodeHash.get(key);
-    if (!node) return -1;
-    this.freqHash.get(node.freq).removeNode(node);
-    if (node.freq==this.leastFreq && this.freqHash.get(node.freq).isEmpty()) this.leastFreq++
-    node.freq++;
-    // freqHash housekeeping
-    if (this.freqHash.get(node.freq)==null) this.freqHash.set(node.freq, new DoublyLinkedList())
-    this.freqHash.get(node.freq).insertHead(node);
-    return node.val;
-};
-
-/** 
- * @param {number} key 
- * @param {number} value
- * @return {void}
- */
-LFUCache.prototype.put = function(key, value) {
-    if (this.capacity == 0) return;
-    let node = this.nodeHash.get(key);
-    if (!node) { // new node
-        this.currentSize++;
-        if (this.currentSize > this.capacity) {
-            let tailKey = this.freqHash.get(this.leastFreq).removeTail();
-            this.nodeHash.delete(tailKey);
-            this.currentSize--;
-        }
-        let newNode = new Node(key, value);
-        // freqHash housekeeping
-        if (this.freqHash.get(1)==null) this.freqHash.set(1, new DoublyLinkedList())
-        this.freqHash.get(1).insertHead(newNode);
-
-        this.nodeHash.set(key, newNode);
-        this.leastFreq = 1;
-
-    } else { // existed node
-        node.val = value;
-        this.freqHash.get(node.freq).removeNode(node);
-        if (node.freq == this.leastFreq && this.freqHash.get(node.freq).isEmpty()) this.leastFreq++;
-        node.freq++;
-        // freqHash housekeeping
-        if (this.freqHash.get(node.freq)==null) this.freqHash.set(node.freq, new DoublyLinkedList())
-        this.freqHash.get(node.freq).insertHead(node);
+  // Helper function to update the frequency of a node
+  updateFrequency(node) {
+    // Remove node from the current frequency list
+    this.freqMap.get(node.freq).delete(node);
+    
+    // If there is no more node with the current frequency, adjust minFreq
+    if (this.freqMap.get(node.freq).size === 0) {
+      if (node.freq === this.minFreq) {
+        this.minFreq++;
+      }
+      this.freqMap.delete(node.freq);
     }
-};
+
+    // Update the frequency of the node
+    node.freq++;
+
+    // Add the node to the new frequency list
+    if (!this.freqMap.has(node.freq)) {
+      this.freqMap.set(node.freq, new Set());
+    }
+    this.freqMap.get(node.freq).add(node);
+  }
+
+  // get method: Retrieve value if the key exists and update its frequency
+  get(key) {
+    if (!this.cache.has(key)) return -1;
+
+    // Access the node and update its frequency
+    const node = this.cache.get(key);
+    this.updateFrequency(node);
+
+    return node.val;
+  }
+
+  // set method: Insert a new key-value pair or update an existing key
+  set(key, val) {
+    if (this.capacity === 0) return;
+
+    if (this.cache.has(key)) {
+      const node = this.cache.get(key);
+      node.val = val;
+      this.updateFrequency(node);
+    } else {
+      if (this.cache.size === this.capacity) {
+        // Evict the least frequently used node
+        const leastFreqNodes = this.freqMap.get(this.minFreq);
+        const nodeToEvict = leastFreqNodes.values().next().value;
+        leastFreqNodes.delete(nodeToEvict);
+        if (leastFreqNodes.size === 0) {
+          this.freqMap.delete(this.minFreq);
+        }
+        this.cache.delete(nodeToEvict.key);
+      }
+
+      // Create a new node and add it to the cache
+      const newNode = new Node(key, val);
+      this.cache.set(key, newNode);
+
+      // Add the new node to the frequency map
+      if (!this.freqMap.has(newNode.freq)) {
+        this.freqMap.set(newNode.freq, new Set());
+      }
+      this.freqMap.get(newNode.freq).add(newNode);
+
+      // Update the minimum frequency if necessary
+      this.minFreq = 1;
+    }
+  }
+}
+
+// Example Usage:
+const cache = new LFUCache(3);
+cache.set(1, 1); // Cache = {1=1}
+cache.set(2, 2); // Cache = {1=1, 2=2}
+console.log(cache.get(1)); // Returns 1, Cache = {1=1, 2=2}, freq of 1 becomes 2
+cache.set(3, 3); // Cache = {1=1, 2=2, 3=3}
+console.log(cache.get(2)); // Returns 2, Cache = {1=1, 2=2, 3=3}, freq of 2 becomes 2
+cache.set(4, 4); // Cache evicts the least frequently used (3) Cache = {1=1, 2=2, 4=4}
+console.log(cache.get(3)); // Returns -1 (not found)
+console.log(cache.get(4)); // Returns 4
