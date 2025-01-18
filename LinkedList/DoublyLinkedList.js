@@ -67,9 +67,21 @@ class DoublyLinkedList {
     this.size++;
   }
 
-  removeFromHead() {}
+  removeFromHead() {
+    if (this.head) {
+      this.head = this.head.next;
+      this.head.prev = null;
+    }
+  }
 
-  removeFromTail() {}
+  removeFromTail() {
+    if (this.tail) {
+      this.tail = this.tail.prev;
+      this.tail.next = null;
+    }
+  }
+
+  removeFromPosition(index) {}
 
   displayForwards() {
     const result = [];
@@ -100,5 +112,9 @@ dll.addToTail(3);
 
 dll.insert(4, 3);
 
+dll.removeFromHead();
+dll.removeFromTail();
+
 dll.displayForwards();
 dll.displayBackwards();
+
