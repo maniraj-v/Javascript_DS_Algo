@@ -247,3 +247,37 @@ function rotateLinkedList(head, k){
 }
 console.log(rotateLinkedList(a, 2))
 //--------------------------------------------------------------------------------------------------------------
+// Palindrome - option 1 - store all values of list in array, then from start and end check equality
+// Option 2 : reverse second half and check with head
+var isPalindrome = function(head) {
+    if(!head.next){
+        return true
+    }
+    // Find second half of list
+    let slow = head
+    let fast = head.next
+    while(fast && fast.next){
+        slow= slow.next
+        fast = fast.next.next
+    }
+    const secondHalf = slow.next
+    // Reverse second half of list
+    let currentNode = secondHalf
+    let reversedSecondHalf = null
+        while(currentNode){
+        const nodesAfterCurrentNode = currentNode.next
+        currentNode.next = reversedSecondHalf
+        reversedSecondHalf = currentNode
+        currentNode = nodesAfterCurrentNode
+    }
+    // Match all node values of Reversed second half of list with head's first half
+    currentNode = head
+    while(reversedSecondHalf){
+        if(reversedSecondHalf.val !== currentNode.val){
+            return false
+        }   
+        reversedSecondHalf = reversedSecondHalf.next
+        currentNode = currentNode.next
+    }
+    return true
+};
