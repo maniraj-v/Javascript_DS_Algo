@@ -20,6 +20,8 @@ Explanation: 342 + 465 = 807.
 Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
 Output: [8,9,9,9,0,0,0,1]
 */
+// This can be enhanced by creating generic function which takes sum and add to result
+// But for readability, kept as is
 var addTwoNumbers = function(list1, list2) {
     const result = new ListNode()
     let currentNode = result
