@@ -51,27 +51,34 @@ function alternateMerge(node1, node2){
 // Solution 2 - Alternate merging 
 // ex: list1 = [1,3,5,7] list2=[2,4] out=[1,2,3,4,5,7]
 
-function ziplist(head1, head2){
-  let current1 = head1.next;
-  let current2 = head2;
-  let tail = head1;
-  let count =0
-  while(current1 && current2){
-    console.log(head1)
-    if(count %2 ===0){
-      tail.next = current2
-      current2 = current2.next
-    }else{
-      tail.next = current1
-      current1 = current1.next      
+function alternateMerge(list1, list2){
+    if(!list1){
+        return list2
     }
-    tail = tail.next
-    count +=1
-  }
-  
-  if(current1) tail.next = current1
-  if(current2) tail.next = current2
-  return head1
+    if(!list2){
+        return list1
+    }
+    const mergedList = new ListNode()  // dummy node for easier handling
+    let currentNode = mergedList
+    let counter = 0
+    while(list1 && list2){
+        if(counter %2 === 0){
+            currentNode.next = list1
+            list1 =list1.next
+        }else{
+            currentNode.next = list2
+            list2 =list2.next
+        }
+        currentNode =currentNode.next
+        counter++
+    }
+    if(list1){
+        currentNode.next = list1
+    }else{
+        currentNode.next = list2
+
+    }
+    return mergedList.next
 }
 //--------------------------------------------------------------------------------------------------------------
 
