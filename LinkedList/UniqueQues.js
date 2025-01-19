@@ -60,3 +60,45 @@ var addTwoNumbers = function(list1, list2) {
     }
     return result.next
 };
+
+
+/*
+
+Merge in between list
+Input: list1 = [10,1,13,6,9,5], a = 3, b = 4, list2 = [1000000,1000001,1000002]
+Output: [10,1,13,1000000,1000001,1000002,5]
+Explanation: We remove the nodes 3 and 4 and put the entire list2 in their place. The blue edges and nodes in the above figure indicate the result.
+    
+*/
+
+var mergeInBetween = function(list1, a, b, list2) {
+    let currentNode = list1
+    let firstHalf = null, lastHalf= null
+    let counter = 0
+    while(currentNode){
+        counter++
+        if(counter === a){
+            const temp = currentNode.next
+            currentNode.next = null
+            firstHalf = list1
+            currentNode = temp
+        }else if(counter -1 === b){
+            lastHalf = currentNode.next
+            console.log({lastHalf})
+            break
+        }else{
+            currentNode = currentNode.next
+        }
+    }
+    mergeList(firstHalf, list2)
+    mergeList(firstHalf, lastHalf)
+    return firstHalf
+};
+
+function mergeList(nodeA, nodeB){
+    let currentNode = nodeA
+    while(currentNode && currentNode.next){
+        currentNode = currentNode.next
+    }
+    currentNode.next = nodeB
+}
