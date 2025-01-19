@@ -281,3 +281,41 @@ var isPalindrome = function(head) {
     }
     return true
 };
+
+// Pattern - "dont adjust pointer for removing nodes"
+// 1. Delete duplicates
+var deleteDuplicates = function(head) {
+    if(!head || !head.next){
+        return head
+    }
+    let currentNode = head
+    while(currentNode && currentNode.next){
+        if(currentNode.val === currentNode.next.val){
+            currentNode.next = currentNode.next.next  // dont adjust pointer since we delete dup
+        }else{
+            currentNode = currentNode.next
+        }
+    }
+    return head
+};
+
+// 2. Delete nodes when matching target val
+var removeElements = function(head, val) {
+    if(!head){
+        return head
+    }
+    let currentNode = head
+    while(currentNode && currentNode.next){
+        if(currentNode.next.val === val){
+            currentNode.next = currentNode.next.next
+            // important note: dont adjust pointer since we deleted node here
+        }else{
+            currentNode = currentNode.next
+        }
+    }
+    if(head.val === val){
+        return head.next
+    }else{
+        return head
+    }
+};
