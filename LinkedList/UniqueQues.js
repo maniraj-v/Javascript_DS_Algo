@@ -102,3 +102,28 @@ function mergeList(nodeA, nodeB){
     }
     currentNode.next = nodeB
 }
+/*
+remove node if higher value present in next nodes
+Input: head = [5,2,13,3,8]
+Output: [13,8]
+*/
+// Think from reverse approach
+var removeNodes = function(head) {
+    if(!head || !head.next){
+        return head
+    }
+    head = reverseList(head)
+    let currentNode = head
+    let result = null
+    let maximum = -Infinity
+    while(currentNode){
+        const nextNodes = currentNode.next
+        if(currentNode.val >= maximum){
+            currentNode.next = result
+            result = currentNode
+        }
+        maximum = Math.max(maximum, currentNode.val )
+        currentNode = nextNodes
+    }
+    return result
+};
