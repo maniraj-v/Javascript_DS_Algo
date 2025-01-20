@@ -194,7 +194,15 @@ function sortAndMergeLists(list1, list2){
 //--------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------
 // Rotate a linked list
-// Option 1 -find length of list and do k % length - actual length. Then split and join
+// Option 1. loop and find n number of nodes
+// split position = n - k%n
+// loop and split
+// loop , join second half with first half
+
+// Option 2. loop and form circular ref and find n number of nodes
+// split position = n - k%n
+// loop and disconnect circular ref
+// Option 1
 var rotateRight = function(head, k) {
     // Early return if k=0 or single element
     if(head === null || head.next === null || k=== 0){
@@ -228,23 +236,30 @@ var rotateRight = function(head, k) {
     return head
 };
 
-//Option 2 - Form circular list and traverse until k=0, change head and disconnect circular list
-function rotateLinkedList(head, k){
-  let current = head;
-
-  while(current.next){
-    current = current.next
-  }
-  current.next = head;
-  // console.log(current)  -- cicular linked list
-  while(k!=0){
-    current = current.next
-    k--
-  }
-  head = current.next
-  current.next = null
-  return head
-}
+//Option 2 - Form circular list 
+var rotateRight = function(head, k) {
+    if(!head || !head.next || k === 0){
+        return head
+    }
+    let currentNode = head
+    let count = 1
+    while(currentNode && currentNode.next){
+        currentNode =currentNode.next
+        count++
+    }
+    if(k === count){
+        return head
+    }
+    currentNode.next = head
+    let splitPosition = count - (k%count)
+    while(splitPosition >0 ){
+        currentNode = currentNode.next
+        splitPosition--
+    }
+    head = currentNode.next
+    currentNode.next = null
+    return head
+};
 console.log(rotateLinkedList(a, 2))
 //--------------------------------------------------------------------------------------------------------------
 // Palindrome - option 1 - store all values of list in array, then from start and end check equality
