@@ -1,6 +1,6 @@
 /*
 
-Generate CSS selector for below HTML structure
+Generate CSS selector for below HTML structure (use JSFiddle and paste HTML in html section)
 <section>
     <ul>
         <li>Home</li>
@@ -9,6 +9,9 @@ Generate CSS selector for below HTML structure
     </ul>
 </section>
 */
+
+const root = document.getElementsByTagName('section')[0]
+const target = document.getElementsByTagName('li')[2]
 const selector = generateSelector(root, target);
 console.log(selector); // section > ul > li:nth-of-type(3)
 
