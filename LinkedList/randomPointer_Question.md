@@ -1,5 +1,6 @@
 // Deep copy of linked list with Random pointer
-var copyRandomList = function(head) {
+
+function deepCopy(head) {
     if (!head) return null;
 
     // Step 1: Interweave nodes
