@@ -1,22 +1,23 @@
+// Stringify Implementation 
+// with cicular reference check and string literal escapse character check
 const obj = {
-  name: "mani",
+  name: 'mani"raj',
   age: 23,
   hobbies: ["movies", "cricket"],
 };
-obj.circular = obj;
 
-const arr = ["mani", "raj"];
+const arr = ["mani", "rajs"];
 
 console.log("original conversion");
-// console.log(JSON.stringify(obj));
-// console.log(JSON.stringify(arr));
+console.log(JSON.stringify(obj));
+console.log(JSON.stringify(arr));
 
 JSON.myStringify = function (input) {
   const weakset = new WeakSet();
 
   function traverse(inputData) {
     if (typeof inputData === "string") {
-      return `"${inputData}"`;
+      return `"${inputData.replaceAll('"', '"\\')}"`;
     }
 
     if (
