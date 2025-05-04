@@ -1,4 +1,4 @@
-
+// Deep copy of linked list with Random pointer
 var copyRandomList = function(head) {
     if (!head) return null;
 
@@ -33,58 +33,76 @@ var copyRandomList = function(head) {
     return dummy.next;
 };
 
+### 🧩 Original Linked List
 
-🧩 Original Linked List
 Consider the following linked list:
 
 csharp
-Copy
-Edit
-1 → 2 → 3 → 4 → 5 → null
-With the corresponding random pointers:
+
+CopyEdit
+
+`1 → 2 → 3 → 4 → 5 → null`
+
+With the corresponding `random` pointers:
 
 arduino
-Copy
-Edit
-1.random → 3
+
+CopyEdit
+
+`1.random → 3
 2.random → 1
 3.random → 5
 4.random → 2
-5.random → 4
-🔄 Step 1: Interweave Original and Copied Nodes
+5.random → 4`
+
+* * * * *
+
+### 🔄 Step 1: Interweave Original and Copied Nodes
+
 We create a copy of each node and insert it immediately after the original node:
 
 matlab
-Copy
-Edit
-1 → 1' → 2 → 2' → 3 → 3' → 4 → 4' → 5 → 5' → null
-Here, 1', 2', etc., are the newly created nodes.
 
-🔗 Step 2: Assign Random Pointers to Copied Nodes
-We set the random pointers for the copied nodes. Since each copied node is immediately after its original, we can assign the random pointer of node.next to node.random.next:
+CopyEdit
 
-1'.random = 3'
+`1 → 1' → 2 → 2' → 3 → 3' → 4 → 4' → 5 → 5' → null`
 
-2'.random = 1'
+Here, `1'`, `2'`, etc., are the newly created nodes.
 
-3'.random = 5'
+* * * * *
 
-4'.random = 2'
+### 🔗 Step 2: Assign Random Pointers to Copied Nodes
 
-5'.random = 4'
+We set the `random` pointers for the copied nodes. Since each copied node is immediately after its original, we can assign the `random` pointer of `node.next` to `node.random.next`:
 
-✂️ Step 3: Separate the Original and Copied Lists
+-   `1'.random = 3'`
+
+-   `2'.random = 1'`
+
+-   `3'.random = 5'`
+
+-   `4'.random = 2'`
+
+-   `5'.random = 4'`
+
+* * * * *
+
+### ✂️ Step 3: Separate the Original and Copied Lists
+
 Finally, we separate the interwoven list into two distinct lists:
 
-Original List:
+**Original List:**
 
 csharp
-Copy
-Edit
-1 → 2 → 3 → 4 → 5 → null
-Copied List:
+
+CopyEdit
+
+`1 → 2 → 3 → 4 → 5 → null`
+
+**Copied List:**
 
 matlab
-Copy
-Edit
-1' → 2' → 3' → 4' → 5' → null
+
+CopyEdit
+
+`1' → 2' → 3' → 4' → 5' → null`
