@@ -94,38 +94,35 @@ Output: [10,1,13,1000000,1000001,1000002,5]
 Explanation: We remove the nodes 3 and 4 and put the entire list2 in their place. The blue edges and nodes in the above figure indicate the result.
     
 */
-
 var mergeInBetween = function(list1, a, b, list2) {
     let currentNode = list1
-    let firstHalf = null, lastHalf= null
-    let counter = 0
+    let count = 0
+    let nodesBeforeA = null
+    let nodesAfterB = null
     while(currentNode){
-        counter++
-        if(counter === a){
+        if(count === a -1){
             const temp = currentNode.next
             currentNode.next = null
-            firstHalf = list1
-            currentNode = temp
-        }else if(counter -1 === b){
-            lastHalf = currentNode.next
-            console.log({lastHalf})
-            break
-        }else{
-            currentNode = currentNode.next
+            nodesBeforeA = currentNode
+            currentNode.next = temp
         }
-    }
-    mergeList(firstHalf, list2)
-    mergeList(firstHalf, lastHalf)
-    return firstHalf
-};
-
-function mergeList(nodeA, nodeB){
-    let currentNode = nodeA
-    while(currentNode && currentNode.next){
+        if(count === b){
+            nodesAfterB = currentNode.next
+            break
+        }
+        count++
         currentNode = currentNode.next
     }
-    currentNode.next = nodeB
-}
+    nodesBeforeA.next = list2
+    currentNode = list2
+    while(currentNode.next){
+        currentNode = currentNode.next
+    }
+    currentNode.next = nodesAfterB
+    list2 = currentNode
+    return list1
+};
+
 /*
 remove node if higher value present in next nodes
 Input: head = [5,2,13,3,8]
