@@ -1,5 +1,6 @@
 // Deep copy of linked list with Random pointer
 
+```js
 function deepCopy(head) {
     if (!head) return null;
 
@@ -33,6 +34,7 @@ function deepCopy(head) {
 
     return dummy.next;
 };
+```
 
 ### 🧩 Original Linked List
 
