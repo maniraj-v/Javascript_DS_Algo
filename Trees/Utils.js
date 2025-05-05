@@ -131,7 +131,23 @@ function goodNodes(root) {
 }
 //-------------------------------------------------------------------------------------------
 // Validate whethere BST is correct or not
-// Refer: image for clear picture of min,max flow to depth of tree
+// Method 1 : using inorder traversal , produces result in ascending order, if its not ascending, then its not valid BST
+var isValidBST = function(root) {
+    let isValidBST = true
+    let lastCheckedValue = null
+    function traverse(node){
+        node.left && traverse(node.left)
+        if(lastCheckedValue !== null && node.val <= lastCheckedValue){
+            isValidBST = false
+        }
+        lastCheckedValue = node.val
+        isValidBST && node.right && traverse(node.right)
+    }
+    traverse(root)
+    return isValidBST
+};
+
+// Method 2 using min, max for every node --> Refer: image for clear picture of min,max flow to depth of tree
 var isValidBST = function (root) {
   function traverse(node, min, max) {
     if (node === null) {
