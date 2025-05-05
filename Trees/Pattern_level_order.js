@@ -68,24 +68,24 @@ Other solution :
  https://leetcode.com/problems/binary-tree-right-side-view/solutions/549960/javascript-52ms-dfs
 */
 
-function rightSideView(root) {
-  const result = [];
-  if (root === null) {
-    return result;
-  }
-  const queue = [root];
-  while (queue.length > 0) {
-    let stackLen = queue.length;
-    while (stackLen > 0) {
-      const node = queue.shift();
-      if (stackLen === 1) {
-        result.push(node.val);
-      }
-      node.left && queue.push(node.left);
-      node.right && queue.push(node.right);
-      stackLen--;
+var rightSideView = function(root) {
+    if(!root){
+        return []
     }
-  }
-  return result;
-}
+    const numbers = []
+    const queue = [root]
+    let temp = []
+    while(queue.length >0){
+        const queueSize = queue.length
+        for(let i=0;i<queueSize;i++){
+            const node = queue.shift()
+            temp.push(node.val)
+            node.left && queue.push(node.left)
+            node.right && queue.push(node.right)
+        }
+        numbers.push(temp[temp.length - 1]) // take the last element in the level which could be right or left (incase of no right)
+        temp = []
+    }
+    return numbers
+};
 //-------------------------------------------------------------------------------------------
