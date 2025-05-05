@@ -3,6 +3,36 @@
     Input: root = [1,2,3,4,5,6,7]
     Output: [[1],[2,3],[4,5,6,7]]
 */
+
+// Method #1 - easy to understand
+
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrder = function (root) {
+    if (!root) {
+        return []
+    }
+    const numbers = []
+    const queue = [root]
+    let temp = []
+    while (queue.length > 0) {
+        const queueSize = queue.length
+        for (let i = 0; i < queueSize; i++) {
+            const node = queue.shift()
+            temp.push(node.val)
+            node.left && queue.push(node.left)
+            node.right && queue.push(node.right)
+        }
+        numbers.push(temp)
+        temp = []
+    }
+    return numbers
+};
+
+// Method 2
+
 function levelOrder(root) {
   const result = [];
   if (root === null) {
