@@ -147,7 +147,7 @@ var isValidBST = function(root) {
     return isValidBST
 };
 
-// Method 2 using min, max for every node --> Refer: image for clear picture of min,max flow to depth of tree
+// Method 2: using min, max for every node --> Refer: image for clear picture of min,max flow to depth of tree
 var isValidBST = function (root) {
   function traverse(node, min, max) {
     if (node === null) {
@@ -166,4 +166,23 @@ var isValidBST = function (root) {
   return traverse(root, -Infinity, Infinity);
 };
 //-------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
+// Return Kth Smallest element in tree
+// Approach : Inorder traversal return sort of tree
+function kthSmallest(root, k) {
+  let result,
+    isKthElementFound = false;
+  function traverse(node) {
+    !isKthElementFound && node.left && traverse(node.left);
+    k--;
+    if (k === 0) {
+      result = node.val;
+      isKthElementFound = true;
+      return;
+    }
+    !isKthElementFound && node.right && traverse(node.right);
+  }
+  traverse(root);
+  return result;
+}
 //-------------------------------------------------------------------------------------------
