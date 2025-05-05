@@ -36,7 +36,7 @@ function DFSRecursive(head) {
     if (node === null) {
       return;
     }
-    numbers.push(node.val);
+    numbers.push(node.val);       // If this statement is line 1, then pre-order, if line 2 , then in-order, if line 3 then post-order traversal
     node.left && traverse(node.left);
     node.right && traverse(node.right);
   }
