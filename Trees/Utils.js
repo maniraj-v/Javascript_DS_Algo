@@ -61,7 +61,8 @@ function isSameTree(p, q) {
     isSameTree(p.right, q.right)
   );
 }
-// Is Sub Tree using Is Same Tree
+// !!!!Important!!!!
+// Is SubTree --> leverage using Same Tree Problem
 function isSubtree(root, subRoot) {
   if (root === null) {
     return false;
