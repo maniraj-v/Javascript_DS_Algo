@@ -15,7 +15,7 @@ for (let i = 0; i < array.length; i++) {
 console.log(array)
 
 
-// Merge Sort
+// Merge Sort  -- JS sort mutate array, use compare function
 const array = [8, 12, 7, 1, 2, 6, 5]
 
 Array.prototype.mySort = function (compareFn) {
@@ -59,6 +59,7 @@ Array.prototype.mySort = function (compareFn) {
     return merge(sortedLeft, sortedRight);
   }
   const result = mergeSort(this);
+  // this = result, --> will not work, error will come saying cant assign to read only property
   for (let i = 0; i < this.length; i++) {
     this[i] = result[i];
   }
