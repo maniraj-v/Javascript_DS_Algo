@@ -191,7 +191,18 @@ console.log(array.myShift(), array)
 /* *********************************************************************** */
 /* UnShift  -- solve this and put solution below
 /* *********************************************************************** */
+Array.prototype.myUnShift = function (...args) {
+  const arr = this;
 
+  for (let i = arr.length - 1; i >= 0; i--) {
+    arr[i + args.length] = arr[i];
+  }
+
+  for (let i = 0; i < args.length; i++) {
+    arr[i] = args[i];
+  }
+  return arr.length;
+};
 
 
 /* *********************************************************************** */
