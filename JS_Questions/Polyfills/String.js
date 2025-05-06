@@ -1,7 +1,7 @@
-// split
-
-const str = "apple";
-
+/*********************************************************************************/
+/************* Split Polyfill  ***************************************************/
+// Note: split arguments -> separator, limit
+//
 // Important concepts of indexOf
 // 'apple'.indexOf('')
 // 0
@@ -12,7 +12,7 @@ const str = "apple";
 // 'apple'.indexOf('ap', 4)
 // -1
 
-String.prototype.mySplit = function (separator) {
+String.prototype.mySplit = function (separator, limit) {
   const str = String(this);
   const result = [];
 
@@ -32,4 +32,4 @@ String.prototype.mySplit = function (separator) {
   return result;
 };
 
-console.log(str.mySplit("a"));
+/*********************************************************************************/
