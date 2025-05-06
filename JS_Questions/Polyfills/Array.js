@@ -179,13 +179,12 @@ Array.prototype.myShift = function() {
     }
 
     var removedElement = this[0];
-		for(let i=1;i<this.length;i++){
-    		this[i-1] = this[i]
-        delete this[i]
+	for(let i=1;i<this.length;i++){
+	this[i-1] = this[i]
     }
     this.length = this.length -1
     return removedElement; 
-  };
+};
   
 console.log(array.myShift(), array)
 
