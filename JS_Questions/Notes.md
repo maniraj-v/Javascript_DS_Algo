@@ -72,3 +72,70 @@ Answer - Arrow function dont have 'this' , depends on parent scope for it.
 Arrow function 'this' depends on where function is declared
 Normal function 'this' depends on where function is invoked
 Note: We are passing an arrow function to the setTimeout. Arrow functions retains the scope of their definition. Hence, when the arrow function will be called then context will be same as sayName function.
+
+
+## What is `toString` in JavaScript?
+
+-   `toString` is a **method defined on `Object.prototype`**, which means **every object in JavaScript inherits it** unless it's explicitly overridden.
+
+-   So yes, **it's accessible from any instance** of an object, unless that object has a `null` prototype or you override it.
+
+# In JavaScript terms:
+
+-   JavaScript does **not** have "abstract classes" in the traditional object-oriented sense like Java or C#.
+
+-   However, `Object.prototype.toString` behaves like an "inherited default" method --- it's part of the prototype chain.
+
+# Example:
+
+js
+
+CopyEdit
+
+`const obj = {};
+console.log(obj.toString()); // "[object Object]"`
+
+This works because:
+
+-   `obj` inherits from `Object.prototype`
+
+-   `Object.prototype` defines a `toString()` method
+
+-   So, `obj.toString()` is valid and calls that inherited method
+
+# Is `toString` always available?
+
+Not always. Two exceptions:
+
+1.  **Object with `null` prototype**:
+
+    js
+
+    CopyEdit
+
+    `const obj = Object.create(null);
+    console.log(obj.toString); // undefined`
+
+    This object does **not** inherit from `Object.prototype`.
+
+2.  **If overridden**:
+
+    js
+
+    CopyEdit
+
+    `const obj = {
+      toString() {
+        return "Custom string";
+      }
+    };
+    console.log(obj.toString()); // "Custom string"`
+
+So to sum up:
+
+-   `toString` is an instance method inherited from `Object.prototype`.
+
+-   It's accessible by default from any object instance.
+
+
+
