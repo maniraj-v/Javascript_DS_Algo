@@ -22,3 +22,19 @@ const debouncedPrint = debounce(print, 5000);
 
 debouncedPrint("Mani"); // print Mani after 5 seconds
 debouncedPrint("Maniraj"); // defer previous print and print Maniraj after 5 seconds
+
+
+
+// this.context example
+
+
+const debouncedPrint = debounce(print, 2000);
+
+const obj = {
+  firstName: "mani",
+  debouncedPrint,
+};
+
+obj.debouncedPrint("Mani"); // print Mani after 5 seconds
+obj.debouncedPrint("Maniraj"); // defer previous print and print Maniraj after 5 seconds
+
