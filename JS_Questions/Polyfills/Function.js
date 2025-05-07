@@ -10,17 +10,32 @@ function greet(age) {
   return this.firstName + " " + this.place + " " + age
 }
 
-// CALL Polyfill
-Function.prototype.myCall = function(ref,...props){
+// CALL Polyfill  
+Function.prototype.myCall = function(ref,...args){
 		const func = this
     const symbol = Symbol()
     const obj = ref || globalThis
     obj[symbol] = func
        
-   const result= obj[symbol](...props)
+   const result= obj[symbol](...args)
    delete obj[symbol]
    return result
 }
 
 console.log(greet.myCall(obj, 23))
 console.log(greet.myCall(null, 23))
+
+// APPLY Polyfill - args will be array
+
+Function.prototype.myApply = function(ref,args){
+		const func = this
+    const symbol = Symbol()
+    const obj = ref || globalThis
+    obj[symbol] = func
+       
+   const result= obj[symbol](...args)
+   delete obj[symbol]
+   return result
+}
+
+console.log(greet.myApply(obj, [23]))
