@@ -39,3 +39,16 @@ Function.prototype.myApply = function(ref,args){
 }
 
 console.log(greet.myApply(obj, [23]))
+
+// BIND polyfill
+
+Function.prototype.myBind = function (ref, ...args1) {
+  const func = this
+
+  return function (...args2) {
+    const symbol = Symbol()
+    const obj = ref || globalThis
+    obj[symbol] = func
+    return obj[symbol](...args1, ...args2)
+  }
+}
