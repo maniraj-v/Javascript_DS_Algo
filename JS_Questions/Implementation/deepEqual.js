@@ -3,6 +3,22 @@ function deepEqual(a, b) {
 
   if (typeof a !== typeof b) return false;
 
+  // Check for functions
+  if (typeof a === 'function' || typeof b === 'function') {
+    // You can choose to compare function toString() or ignore functions
+    return a.toString() === b.toString();
+  }
+
+  // Handle Date
+  if (a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime();
+  }
+
+  // Handle RegExp
+  if (a instanceof RegExp && b instanceof RegExp) {
+    return a.toString() === b.toString();
+  }
+
   if (Array.isArray(a) && Array.isArray(b)) {
     if (a.length !== b.length) return false;
     for (let i = 0; i < a.length; i++) {
