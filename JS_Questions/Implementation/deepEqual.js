@@ -1,32 +1,28 @@
-function deepEqual(value, other) {
-  if (typeof value !== typeof other) {
-    return false
+function deepEqual(a, b) {
+  if (a === b) return true;
+
+  if (typeof a !== typeof b) return false;
+
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!deepEqual(a[i], b[i])) return false;
+    }
+    return true;
   }
 
-  if (Array.isArray(value) && Array.isArray(other)) {
-    if (value.length !== other.length) {
-      return false
-    }
-    for (let i = 0; i < value.length; i++) {
-      if (!deepEqual(value[i], other[i])) {
-        return false
+  if (a && b && typeof a === 'object' && typeof b === 'object') {
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+    if (aKeys.length !== bKeys.length) return false;
+
+    for (const key of aKeys) {
+      if (!b.hasOwnProperty(key) || !deepEqual(a[key], b[key])) {
+        return false;
       }
     }
-    return true
+    return true;
   }
 
-  if (value !== null && typeof value === 'object' &&
-    other !== null && typeof other === 'object'
-  ) {
-    const keys = Object.keys({ ...value, ...other })
-    for (const key of keys) {
-      if (!deepEqual(value[key], other[key])) {
-        return false
-      }
-    }
-    return true
-  }
-
-
-  return value === other
+  return false;
 }
