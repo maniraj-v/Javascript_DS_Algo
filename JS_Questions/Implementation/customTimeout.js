@@ -1,62 +1,66 @@
-(function IIFE(window) {
-  let idCounter = 0;
-  const timeouts = {};
-  const intervals = {};
+const timerSet = new Set();
 
-  window.customSetTimeout = function (callback, delay, ...args) {
-    const id = ++idCounter;
-    const targetTime = Date.now() + delay;
+window.setTimeout = function (callback, duration, ...args) {
+  const futureTime = Date.now() + duration;
+  const id = window.crypto.randomUUID();
 
-    function check() {
-      if (!timeouts[id]) return;
-
-      if (Date.now() >= targetTime) {
-        try {
-          callback.apply(null, args);
-        } catch (e) {
-          console.error("customSetTimeout error:", e);
-        }
-        delete timeouts[id];
-      } else {
-        requestAnimationFrame(check);
-      }
+  function check() {
+    if (!timerSet.has(id)) {
+      return;
     }
+    if (Date.now() >= futureTime) {
+      callback.apply(null, args);
+      timerSet.delete(id);
+    } else {
+      requestIdleCallback(check);
+    }
+  }
+  timerSet.add(id);
+  check();
+  return id;
+};
 
-    timeouts[id] = true;
+window.clearTimeout = function (timerId) {
+  if (!timerId) {
+    return;
+  }
+  timerSet.delete(timerId);
+};
+
+const timerId = setTimeout(
+  (name) => {
+    console.log(name, "test222");
+  },
+  2000,
+  "mani"
+);
+
+// Modify setTimeout slightly
+
+window.setInterval = function (callback, duration, ...args) {
+  let futureTime = Date.now() + duration;
+  const id = window.crypto.randomUUID();
+
+  function check() {
+    if (!timerSet.has(id)) {
+      return;
+    }
+    if (Date.now() >= futureTime) {
+      callback.apply(null, args);
+      futureTime = duration + futureTime;
+    }
     requestAnimationFrame(check);
-    return id;
-  };
+  }
+  timerSet.add(id);
+  check();
+  return id;
+};
 
-  window.customClearTimeout = function (id) {
-    delete timeouts[id];
-  };
+window.clearInterval = function (timerId) {
+  if (!timerId) {
+    return;
+  }
+  timerSet.delete(timerId);
+};
 
-  window.customSetInterval = function (callback, interval, ...args) {
-    const id = ++idCounter;
-    let nextTime = Date.now() + interval;
 
-    function tick() {
-      if (!intervals[id]) return;
-
-      const now = Date.now();
-      if (now >= nextTime) {
-        try {
-          callback.apply(null, args);
-        } catch (e) {
-          console.error("customSetInterval error:", e);
-        }
-        nextTime += interval;
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    intervals[id] = true;
-    requestAnimationFrame(tick);
-    return id;
-  };
-
-  window.customClearInterval = function (id) {
-    delete intervals[id];
-  };
-})(window);
